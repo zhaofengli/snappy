@@ -1,0 +1,2 @@
+family = 'test'
+mylang = 'test'
