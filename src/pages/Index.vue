@@ -58,6 +58,7 @@
               <v-btn flat @click.native="browseFile(file)">Explore</v-btn>
               <v-spacer></v-spacer>
               <v-btn flat icon @click.native.stop="renameFile(file)"><v-icon>mode_edit</v-icon></v-btn>
+              <v-btn flat icon @click.native.stop="exportFile(file)"><v-icon>save</v-icon></v-btn>
               <v-btn flat icon @click.native.stop="tinkerFile(file)"><v-icon>code</v-icon></v-btn>
               <v-btn flat icon class="red--text" @click.native="removeFile(file.id)"><v-icon>delete</v-icon></v-btn>
             </v-card-actions>
@@ -78,6 +79,7 @@
       Merge files
     </v-btn>
     <import-file-dialog ref="importDialog"></import-file-dialog>
+    <export-file-dialog ref="exportDialog"></export-file-dialog>
     <rename-file-dialog ref="renameDialog"></rename-file-dialog>
     <merge-files-dialog ref="mergeDialog"></merge-files-dialog>
     <api-tutorial-dialog ref="apiTutorialDialog"></api-tutorial-dialog>
@@ -87,6 +89,7 @@
 <script>
 import UnsupportedBrowserWarning from '@/components/UnsupportedBrowserWarning';
 import ImportFileDialog from '@/components/ImportFileDialog';
+import ExportFileDialog from '@/components/ExportFileDialog';
 import RenameFileDialog from '@/components/RenameFileDialog';
 import MergeFilesDialog from '@/components/MergeFilesDialog';
 import ApiTutorialDialog from '@/components/ApiTutorialDialog';
@@ -144,6 +147,7 @@ export default {
   components: {
     'unsupported-browser-warning': UnsupportedBrowserWarning,
     'import-file-dialog': ImportFileDialog,
+    'export-file-dialog': ExportFileDialog,
     'rename-file-dialog': RenameFileDialog,
     'merge-files-dialog': MergeFilesDialog,
     'api-tutorial-dialog': ApiTutorialDialog,
@@ -162,6 +166,9 @@ export default {
     },
     renameFile(file) {
       this.$refs.renameDialog.open(file);
+    },
+    exportFile(file) {
+      this.$refs.exportDialog.open(file);
     },
     removeFile(id) {
       this.$store.commit('removeFile', id);
