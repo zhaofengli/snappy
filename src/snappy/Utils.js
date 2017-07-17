@@ -87,10 +87,10 @@ export default class Utils {
             a[snp].genotype !== b[snp].genotype
           ) {
             result[snp] = resolver(snp, a[snp], b[snp]);
+          } else {
+            // Both agree or a[snp] is no-call: Use b
+            result[snp] = b[snp];
           }
-
-          // Both agree or a[snp] is no-call: Use b
-          result[snp] = b[snp];
         } else if (!has(a, snp)) {
           // a doesn't have this no-call
           result[snp] = b[snp];
