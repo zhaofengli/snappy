@@ -53,6 +53,11 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        loader: 'worker-loader',
+        include: [resolve('src/workers')],
+      },
+      {
+        test: /\.js$/,
         loader: 'babel-loader?cacheDirectory',
         include: [resolve('src'), resolve('test')],
       },

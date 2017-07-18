@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent>
     <v-card>
       <v-toolbar class="teal" dark>
-        <v-btn dark icon @click.native="dialog = false" v-if="state !== 'processing'">
+        <v-btn dark icon @click.native="close" v-if="state !== 'processing'">
           <v-icon>close</v-icon>
         </v-btn>
         <v-icon dark v-else>hourglass_empty</v-icon>
@@ -44,10 +44,10 @@
 <script>
 import PromiseFileReader from 'promise-file-reader';
 import FileDialog from 'file-dialog/file-dialog.min';
-import Dna2Json from 'dna2json';
 import Axios from 'axios';
 import uuidv1 from 'uuid/v1';
 import File from '@/snappy/File';
+import FileParser from '@/workers/FileParser';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import SampleFileUrl from 'file-loader!@/assets/samples/genome_Lilly_Mendel_Mom__v4_Full.txt';
@@ -57,13 +57,31 @@ export default {
     return {
       dialog: false,
       state: 'idle',
+      worker: null,
       count: 0,
     };
   },
   methods: {
     open() {
-      this.dialog = true;
+      this.worker = new FileParser();
+      this.worker.onmessage = (event) => {
+        if (event.data.state === 'error') {
+          this.state = 'error';
+        } else {
+          const file = new File(uuidv1(), event.data.snps);
+          file.name = event.data.name;
+          this.$store.commit('addFile', file);
+          this.count = file.length;
+          this.state = 'done';
+        }
+      };
+
       this.state = 'idle';
+      this.dialog = true;
+    },
+    close() {
+      this.dialog = false;
+      this.worker.terminate();
     },
     showPicker() {
       FileDialog().then((list) => {
@@ -83,18 +101,7 @@ export default {
     },
     loadFile(raw, name) {
       this.state = 'processing';
-      setTimeout(() => {
-        Dna2Json.parse(raw, (err, snps) => {
-          if (err) this.state = 'error';
-          else {
-            const file = new File(uuidv1(), snps);
-            file.name = name;
-            this.$store.commit('addFile', file);
-            this.count = file.length;
-            this.state = 'done';
-          }
-        });
-      }, 0);
+      this.worker.postMessage({ raw, name });
     },
   },
 };
