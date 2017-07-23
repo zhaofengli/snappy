@@ -79,7 +79,7 @@ def parse_snps():
 
 if __name__ == '__main__':
     snps = utils.run_parser(parse_snps)
-    minus = [name for name, details in snps.items() if details['orientation'] == 'minus']
+    minus = [name for name, details in snps.items() if details.get('orientation', None) == 'minus']
 
     files = {
         'snps.json': snps,
