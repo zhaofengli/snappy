@@ -1,6 +1,5 @@
 import clone from 'lodash/clone';
 import has from 'lodash/has';
-import MinusOrientationSnps from '#/minusorientationsnps.json';
 import Utils from '@/snappy/Utils';
 
 export default class File {
@@ -26,7 +25,7 @@ export default class File {
     const normalizedGetter = (target, snp) => {
       if (!has(this.snps, snp)) {
         return undefined;
-      } else if (MinusOrientationSnps.indexOf(snp) === -1) {
+      } else if (!Utils.isSnpOrientationMinus(snp)) {
         return this.snps[snp];
       }
 

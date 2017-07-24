@@ -2,6 +2,7 @@ import Gql from 'gql';
 import clone from 'lodash/clone';
 import has from 'lodash/has';
 import GsCriteriaParser from '@/snappy/gs-criteria.pegjs';
+import MinusSnpGaps from '#/minussnpgaps.json';
 
 export default class Utils {
   static parseGenosetCriteria(criteria, genosets = {}, dependencyResolver = () => {}) {
@@ -148,5 +149,36 @@ export default class Utils {
 
   static formatGenotype(genotype) {
     return `${genotype[0]};${genotype[1]}`;
+  }
+
+  static isSnpOrientationMinus(snp) {
+    if (!snp.startsWith('rs')) {
+      return false;
+    }
+    const n = Number(snp.slice(2));
+    // eslint-disable-next-line
+    let pos = 0;
+    // eslint-disable-next-line
+    for (const gap of MinusSnpGaps) {
+      if (gap > 0) {
+        // Gap
+        pos += gap;
+        if (pos === n) {
+          return true;
+        }
+      } else {
+        // Consecutive SNPs
+        if (pos < n && n <= pos - gap) {
+          return true;
+        }
+        pos -= gap;
+      }
+
+      if (n < pos) {
+        return false;
+      }
+    }
+
+    return false;
   }
 }

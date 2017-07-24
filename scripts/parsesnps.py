@@ -81,8 +81,40 @@ if __name__ == '__main__':
     snps = utils.run_parser(parse_snps)
     minus = [name for name, details in snps.items() if details.get('orientation', None) == 'minus']
 
+    # "Compress" the list
+    rsids = []
+    for item in minus:
+        if item.startswith('rs'):
+            rsids.append(int(item[2:]))
+        else:
+            print('Found a non-rsID SNP having minus orientation. Snappy has a bug.')
+            sys.exit(1)
+
+    rsids = sorted(rsids)
+
+    gaps = []
+    conseq = 0
+    gaps.append(rsids[0])
+    for pos in range(1, len(rsids)):
+        diff = rsids[pos] - rsids[pos - 1]
+        if diff > 1:
+            # gap
+            if conseq:
+                gaps.append(-1 * conseq)
+            gaps.append(diff)
+            conseq = 0
+        elif diff == 1:
+            # conseq
+            conseq += 1
+        else:
+            print("Found duplicate rsIDs. You've got bad data.")
+            sys.exit(1)
+
+    if conseq:
+        gaps.append(-1 * conseq)
+
     files = {
         'snps.json': snps,
-        'minusorientationsnps.json': minus,
+        'minussnpgaps.json': gaps,
     }
     utils.write_files(files)
