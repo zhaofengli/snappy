@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import AsyncComputed from 'vue-async-computed';
+import VMediaQuery from 'v-media-query';
 
 // == Styling ==
 import 'webpack-material-design-icons';
@@ -30,6 +31,7 @@ window.Utils = Utils;
 // == Vue modules ==
 Vue.use(Vuetify);
 Vue.use(AsyncComputed);
+Vue.use(VMediaQuery);
 
 /* eslint-disable no-new */
 new Vue({

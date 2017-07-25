@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="full orange darken-2 text-xs-center pt-5">
-    <h2 class="white--text">Snappy</h2>
+    <h2 class="white--text hidden-sm-and-down">Snappy</h2>
     <v-container fluid grid-list-lg class="text-xs-left">
       <v-layout row wrap>
         <v-flex xs12 md8 offset-md2 lg4 offset-lg4>
@@ -27,6 +27,15 @@
                   This is a prototype, and many things don't work. Please contribute to <a href="https://github.com/zhaofengli/snappy">our GitHub repo</a>.
                 </v-flex>
               </v-layout>
+
+              <v-btn
+                primary dark fab
+                absolute bottom right
+                @click.native="showPicker"
+                v-if="files.length === 0"
+              >
+                <v-icon>add</v-icon>
+              </v-btn>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -39,17 +48,35 @@
       </v-layout>
     </v-container>
 
-    <v-btn light @click.native="showPicker">
-      <span v-if="files.length === 0">
-        Get started
-      </span>
-      <span v-else>
-        Import file
-      </span>
-    </v-btn>
-    <v-btn light @click.native="showMerger" v-if="files.length >= 2">
-      Merge files
-    </v-btn>
+    <v-container fluid>
+      <v-btn
+        primary dark fab
+        @click.native="showPicker"
+        v-if="files.length > 0"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+
+      <v-btn
+        class="purple" dark fab
+        @click.native="showMerger"
+        v-if="files.length >= 2"
+      >
+        <v-icon>call_merge</v-icon>
+      </v-btn>
+    </v-container>
+
+    <v-container fluid>
+      <v-btn
+        round
+        outline
+        to="acknowledgments"
+        class="indigo--text"
+      >
+        Acknowledgments
+      </v-btn>
+    </v-container>
+
     <import-file-dialog ref="importDialog"></import-file-dialog>
     <merge-files-dialog ref="mergeDialog"></merge-files-dialog>
   </v-container>
