@@ -93,10 +93,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ]),
     new OfflinePlugin({
+      autoUpdate: true,
+      AppCache: false,
       ServiceWorker: {
-        events: true,
-      },
-      AppCache: {
         events: true,
       },
     }),
