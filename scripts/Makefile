@@ -3,7 +3,7 @@ all: download parse
 download:
 	./dumpcat.py --category 'Is a genoset' --with-subpage 'criteria'
 	./dumpcat.py --category 'Is a snp'
-	./dumpcat.py --category 'Is a genotype'
+	./dumpcat.py --category 'Is a genotype' --with-indels
 
 parse:
 	./parsegenosets.py

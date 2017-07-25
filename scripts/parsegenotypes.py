@@ -6,13 +6,15 @@ import re
 
 
 def parse_genotypes():
+    genotypeRegex = re.compile(r'((?:rs|i)[0-9]+)\(([^\)]+)\)')
+
     for page in utils.iter_dump('Is a genotype'):
         ptitle = page.title.cdata
         ptext = page.revision.text.cdata
         name = utils.normalize_name(ptitle)
 
         # Parse genotype
-        matches = re.match('((?:rs|i)[0-9]+)\(([^\)]+)\)', name)
+        matches = genotypeRegex.match(name)
 
         if not matches:
             print('Genotype {} invalid'.format(name))
@@ -29,6 +31,19 @@ def parse_genotypes():
 
         snp = matches.group(1)
         genotype = matches.group(2)
+
+        if ptext.startswith('#REDIRECT'):
+            target = utils.normalize_name(parsed.filter_wikilinks()[0].title)
+            targetgt = genotypeRegex.match(target)
+            if not targetgt:
+                print('Target genotype {} invalid'.format(target))
+                continue
+
+            snpinfo = {}
+            snpinfo[genotype] = targetgt.group(2)
+            yield (snp, snpinfo)
+            continue
+
         genotypeinfo = utils.extract_parameters(parsed, 'genotype', paramMap, delete=True)
 
         if 'D' in genotype or ':' in genotype:

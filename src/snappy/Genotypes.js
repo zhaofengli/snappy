@@ -46,6 +46,12 @@ export default class Genotypes {
       }
 
       // Success
+      if (typeof result === 'string') {
+        // Redirect
+        const target = result;
+        result = GenotypeData[snp][target];
+        result.o = target;
+      }
       result.name = snp;
       result.g = genotype;
       return result;
