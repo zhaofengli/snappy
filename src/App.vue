@@ -4,7 +4,9 @@
       <v-toolbar-title class="white--text">Snappy</v-toolbar-title>
     </v-toolbar>
     <main>
-      <router-view></router-view>
+      <transition name="slide-y-transition">
+        <router-view></router-view>
+      </transition>
     </main>
 
     <v-snackbar v-model="snackbar">
