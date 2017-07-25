@@ -6,15 +6,46 @@
     <main>
       <router-view></router-view>
     </main>
+
+    <v-snackbar v-model="snackbar">
+      {{ message }}
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+
 export default {
   name: 'app',
   data() {
     return {
+      snackbar: false,
+      message: '',
     };
+  },
+  created() {
+    OfflinePluginRuntime.install({
+      onInstalled: () => {
+        this.message = 'Snappy is now available offline.';
+        this.snackbar = true;
+      },
+      onUpdateReady: () => {
+        OfflinePluginRuntime.applyUpdate();
+      },
+      onUpdated: () => {
+        this.message = 'Snappy has been updated. Refresh the page to use the new version.';
+        this.snackbar = true;
+      },
+    });
+
+    window.addEventListener('online', () => {
+      this.$store.commit('setOnlineStatus', true);
+    });
+
+    window.addEventListener('offline', () => {
+      this.$store.commit('setOnlineStatus', false);
+    });
   },
 };
 </script>

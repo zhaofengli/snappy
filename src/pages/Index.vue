@@ -75,6 +75,15 @@
       >
         Acknowledgments
       </v-btn>
+
+      <v-btn
+        round
+        outline
+        v-if="!online"
+        v-tooltip:top="{ html: 'Offline' }"
+      >
+        <v-icon>airplanemode_active</v-icon>
+      </v-btn>
     </v-container>
 
     <import-file-dialog ref="importDialog"></import-file-dialog>
@@ -111,6 +120,9 @@ export default {
   computed: {
     files() {
       return this.$store.state.files.files;
+    },
+    online() {
+      return this.$store.state.online;
     },
   },
   components: {
