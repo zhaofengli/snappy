@@ -20,7 +20,13 @@
         </template>
       </v-data-table>
     </div>
-    <span v-else>Loading</span>
+    <div v-else class="loading">
+      <v-progress-circular
+        :size="70"
+        class="orange--text"
+        indeterminate
+      ></v-progress-circular>
+    </div>
   </div>
 </template>
 <script>
@@ -106,3 +112,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.loading {
+  text-align: center;
+}
+</style>
