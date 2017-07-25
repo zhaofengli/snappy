@@ -4,7 +4,6 @@ var config = require('../config');
 var webpack = require('webpack');
 var vueLoaderConfig = require('./vue-loader.conf');
 var SplitByPathPlugin = require('webpack-split-by-path');
-var OfflinePlugin = require('offline-plugin');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir);
@@ -35,14 +34,6 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new OfflinePlugin({
-      ServiceWorker: {
-        events: true,
-      },
-      AppCache: {
-        events: true,
-      },
-    }),
   ],
   module: {
     rules: [

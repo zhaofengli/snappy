@@ -25,19 +25,21 @@ export default {
     };
   },
   created() {
-    OfflinePluginRuntime.install({
-      onInstalled: () => {
-        this.message = 'Snappy is now available offline.';
-        this.snackbar = true;
-      },
-      onUpdateReady: () => {
-        OfflinePluginRuntime.applyUpdate();
-      },
-      onUpdated: () => {
-        this.message = 'Snappy has been updated. Refresh the page to use the new version.';
-        this.snackbar = true;
-      },
-    });
+    if (process.env.NODE_ENV === 'production') {
+      OfflinePluginRuntime.install({
+        onInstalled: () => {
+          this.message = 'Snappy is now available offline.';
+          this.snackbar = true;
+        },
+        onUpdateReady: () => {
+          OfflinePluginRuntime.applyUpdate();
+        },
+        onUpdated: () => {
+          this.message = 'Snappy has been updated. Refresh the page to use the new version.';
+          this.snackbar = true;
+        },
+      });
+    }
 
     window.addEventListener('online', () => {
       this.$store.commit('setOnlineStatus', true);
