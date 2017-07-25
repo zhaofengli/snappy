@@ -5282,6 +5282,10 @@ vue@^2.3.3:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.4.1.tgz#76e0b8eee614613532216b7bfe784e0b5695b160"
 
+vuejs-logger@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vuejs-logger/-/vuejs-logger-1.1.4.tgz#f9825f4590f43507844bfc5ffc360f0250e09337"
+
 vuetify@^0.13.0:
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.13.1.tgz#12f016053bed932dbf20fae43267636c3871fa2b"

@@ -39,6 +39,8 @@ export default {
           this.snackbar = true;
         },
       });
+    } else {
+      this.$log.info('Development mode - Not installing service worker');
     }
 
     window.addEventListener('online', () => {

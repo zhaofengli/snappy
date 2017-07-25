@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import AsyncComputed from 'vue-async-computed';
 import VMediaQuery from 'v-media-query';
+import VueLogger from 'vuejs-logger';
 
 // == Styling ==
 import 'webpack-material-design-icons';
@@ -32,6 +33,10 @@ window.Utils = Utils;
 Vue.use(Vuetify);
 Vue.use(AsyncComputed);
 Vue.use(VMediaQuery);
+Vue.use(VueLogger, {
+  logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  showLogLevel: true,
+});
 
 /* eslint-disable no-new */
 new Vue({
