@@ -2,6 +2,7 @@
   <v-dialog
     v-model="dialog"
     :fullscreen="$mq.below(600)"
+    transition="dialog-bottom-transition"
     persistent
   >
     <v-card>
