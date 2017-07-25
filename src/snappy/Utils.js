@@ -69,37 +69,35 @@ export default class Utils {
     return recurse(parsed);
   }
 
-  static mergeData(a, b, resolver) {
-    return new Promise((resolve) => {
-      const result = clone(a);
+  static async mergeData(a, b, resolver) {
+    const result = clone(a);
 
-      // Default resolver: Always use b
-      if (resolver === undefined) {
-        // eslint-disable-next-line no-param-reassign
-        resolver = (snp, ga, gb) => gb;
-      }
+    // Default resolver: Always use b
+    if (resolver === undefined) {
+      // eslint-disable-next-line no-param-reassign
+      resolver = (snp, ga, gb) => gb;
+    }
 
-      for (const snp of Object.keys(b)) {
-        if (b[snp].genotype !== '??') {
-          // Resolve conflicts
-          if (
-            has(a, snp) &&
-            a[snp].genotype !== '??' &&
-            a[snp].genotype !== b[snp].genotype
-          ) {
-            result[snp] = resolver(snp, a[snp], b[snp]);
-          } else {
-            // Both agree or a[snp] is no-call: Use b
-            result[snp] = b[snp];
-          }
-        } else if (!has(a, snp)) {
-          // a doesn't have this no-call
+    for (const snp of Object.keys(b)) {
+      if (b[snp].genotype !== '??') {
+        // Resolve conflicts
+        if (
+          has(a, snp) &&
+          a[snp].genotype !== '??' &&
+          a[snp].genotype !== b[snp].genotype
+        ) {
+          result[snp] = resolver(snp, a[snp], b[snp]);
+        } else {
+          // Both agree or a[snp] is no-call: Use b
           result[snp] = b[snp];
         }
+      } else if (!has(a, snp)) {
+        // a doesn't have this no-call
+        result[snp] = b[snp];
       }
+    }
 
-      resolve(result);
-    });
+    return result;
   }
 
   static flipAlleles(genotype) {

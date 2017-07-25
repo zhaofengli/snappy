@@ -23,6 +23,7 @@
     "promise-file-reader": "^0.3.1",
     "uuid": "^3.1.0",
     "vue": "^2.3.3",
+    "vue-async-computed": "^3.2.1",
     "vue-router": "^2.3.1",
     "vuetify": "^0.13.0",
     "vuex": "^2.3.1",

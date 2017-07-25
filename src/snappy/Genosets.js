@@ -1,23 +1,21 @@
 import has from 'lodash/has';
-import clone from 'lodash/clone';
 import Utils from '@/snappy/Utils';
-import GenosetData from '#/genosets.json';
 
 const queries = {};
 
-class Genosets {
-  static getRawQuery(genoset) {
+export default class Genosets {
+  static getRawQuery(data, genoset) {
     if (has(queries, genoset)) {
       return queries[genoset];
     }
-    if (has(GenosetData, genoset)) {
-      if (!has(GenosetData[genoset], 'c')) {
+    if (has(data, genoset)) {
+      if (!has(data[genoset], 'c')) {
         return null;
       }
       const query = Utils.parseGenosetCriteria(
-        GenosetData[genoset].c,
+        data[genoset].c,
         queries,
-        Genosets.getRawQuery,
+        gs => Genosets.getRawQuery(data, gs),
       );
       queries[genoset] = query;
       return query;
@@ -26,9 +24,9 @@ class Genosets {
     return null;
   }
 
-  static getQuery(genoset) {
+  static getQuery(data, genoset) {
     return (file) => {
-      const query = this.getRawQuery(genoset);
+      const query = this.getRawQuery(data, genoset);
 
       if (typeof query === 'function') {
         return query(file.normalizedSnps);
@@ -38,37 +36,16 @@ class Genosets {
     };
   }
 
-  static getGenoset(genoset) {
-    const r = clone(GenosetData[genoset]);
-    r.name = genoset;
-    r.match = this.getQuery(genoset);
-    return r;
+  static async get(genoset) {
+    const GenosetData = await import(/* webpackChunkName: "genosets" */ '#/genosets.json');
+    const result = Object.assign({}, GenosetData[genoset]);
+    result.name = genoset;
+    result.match = Genosets.getQuery(GenosetData, genoset);
+    return result;
+  }
+
+  static async getSupportedGenosets() {
+    const GenosetData = await import(/* webpackChunkName: "genosets" */ '#/genosets.json');
+    return Object.keys(GenosetData);
   }
 }
-
-Genosets[Symbol.iterator] = function* iterator() {
-  for (const genoset of Object.keys(GenosetData)) {
-    yield this.getGenoset(genoset);
-  }
-};
-
-if (typeof Proxy === 'undefined') {
-  for (const name of Object.keys(GenosetData)) {
-    Object.defineProperty(Genosets, name, {
-      // eslint-disable-next-line no-loop-func
-      get: () => Genosets.getGenoset(name),
-    });
-  }
-} else {
-  // eslint-disable-next-line no-class-assign
-  Genosets = new Proxy(Genosets, {
-    get: (target, name) => {
-      if (name in target) {
-        return target[name];
-      }
-      return Genosets.getGenoset(name);
-    },
-  });
-}
-
-export default Genosets;

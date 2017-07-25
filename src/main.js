@@ -1,6 +1,7 @@
 // == Vue & friends==
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import AsyncComputed from 'vue-async-computed';
 
 // == Styling ==
 import 'webpack-material-design-icons';
@@ -28,6 +29,7 @@ window.Utils = Utils;
 
 // == Vue modules ==
 Vue.use(Vuetify);
+Vue.use(AsyncComputed);
 
 /* eslint-disable no-new */
 new Vue({

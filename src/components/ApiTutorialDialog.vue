@@ -43,9 +43,9 @@
         <p>
           Snappy includes a full copy of genosets available on SNPedia.
 
-          <pre>Genosets.gs144.match(file)</pre>
+          <pre>Genosets.get('gs144').then(gs => console.log(gs.match(file)))</pre>
 
-          This will tell you whether the person is male or not, by matching the file against <a href="https://www.snpedia.com/index.php/gs144">gs144</a>.
+          This will tell you whether the person is male or not, by matching the file against <a href="https://www.snpedia.com/index.php/gs144">gs144</a>. In particular, the <code>get()</code> method will return a Promise that will resolve with information on the requested genoset.
         </p>
       </v-card-text>
     </v-card>
