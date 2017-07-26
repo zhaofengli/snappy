@@ -1,8 +1,8 @@
 ## `data`
 
-This repository includes data from [SNPedia](snpedia), licensed under the
+This repository includes data from [SNPedia][snpedia], licensed under the
 [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 United States
-License](by-nc-sa-3.0-us).
+License][by-nc-sa-3.0-us].
 
 ## `src/assets/samples`
 
