@@ -13,7 +13,7 @@
         :items="items"
       >
         <template slot="items" scope="props">
-          <td>{{ props.item.name }}</td>
+          <td><a :href="url(props.item.name)">{{ props.item.name }}</a></td>
           <td>{{ props.item.m }}</td>
           <td>{{ props.item.r }}</td>
           <td>{{ props.item.s }}</td>
@@ -70,6 +70,11 @@ export default {
         descending: true,
       },
     };
+  },
+  computed: {
+    url() {
+      return page => `https://www.snpedia.com/index.php/${page}`;
+    },
   },
   created() {
     if (!this.file) {
