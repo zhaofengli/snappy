@@ -7,16 +7,19 @@
         append-icon="search"
       ></v-text-field>
       <v-data-table
+        class="data"
         :search="search"
         :pagination.sync="paginationSync"
         :headers="headers"
         :items="items"
       >
+        <template slot="headers" scope="props">
+          <tr style="display: none;"></tr>
+        </template>
         <template slot="items" scope="props">
-          <td><a :href="url(props.item.name)">{{ props.item.name }}</a></td>
-          <td>{{ props.item.m }}</td>
-          <td>{{ props.item.r }}</td>
-          <td>{{ props.item.s }}</td>
+          <tr>
+            <analyzer-card class="ma-2" :value="props.item"></analyzer-card>
+          </tr>
         </template>
       </v-data-table>
     </div>
@@ -33,6 +36,7 @@
 import has from 'lodash/has';
 import Utils from '@/snappy/Utils';
 import Analyzer from '@/snappy/Analyzer';
+import AnalyzerCard from '@/components/AnalyzerCard';
 
 export default {
   props: ['file'],
@@ -71,18 +75,21 @@ export default {
       },
     };
   },
-  computed: {
-    url() {
-      return page => `https://www.snpedia.com/index.php/${page}`;
-    },
-  },
   created() {
     if (!this.file) {
       this.loaded = true;
       this.items = [
         {
-          name: '404',
-          s: 'Hmm. There is no file to analyze.',
+          name: 'rs1234(A;C)',
+          m: 1.5,
+          r: 'Good',
+          s: 'Hmm. There is no file to analyze. As a result, this is displayed as an example.',
+        },
+        {
+          name: 'rs4988235(C;C)',
+          m: 2.5,
+          r: 'Bad',
+          s: 'Hmm. There is no file to analyze. As a result, this is displayed as an example.',
         },
       ];
       return;
@@ -115,10 +122,18 @@ export default {
       this.loaded = true;
     });
   },
+  components: {
+    'analyzer-card': AnalyzerCard,
+  },
 };
 </script>
 <style lang="scss" scoped>
 .loading {
   text-align: center;
+}
+.data {
+  tr {
+    border-bottom: none !important;
+  }
 }
 </style>

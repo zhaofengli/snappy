@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-1">
     {{ message }}
     <analyzer-table :file="file">
     </analyzer-table>

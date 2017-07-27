@@ -7,22 +7,24 @@ import VueLogger from 'vuejs-logger';
 
 // == Styling ==
 import 'webpack-material-design-icons';
-import './stylus/main.styl';
+import '@/stylus/main.styl';
 
-// == Base component ==
-import App from './App';
+// == Components ==
+import App from '@/App';
+import SnpediaFrame from '@/components/SnpediaFrame';
+import MoreLessToggle from '@/components/MoreLessToggle';
 
 // == Router ==
-import router from './router';
+import router from '@/router';
 
 // == Vuex ==
-import store from './store';
+import store from '@/store';
 
 // == For your console pleasure ==
-import Genosets from './snappy/Genosets';
-import Genotypes from './snappy/Genotypes';
-import Analyzer from './snappy/Analyzer';
-import Utils from './snappy/Utils';
+import Genosets from '@/snappy/Genosets';
+import Genotypes from '@/snappy/Genotypes';
+import Analyzer from '@/snappy/Analyzer';
+import Utils from '@/snappy/Utils';
 
 window.Genosets = Genosets;
 window.Genotypes = Genotypes;
@@ -37,6 +39,9 @@ Vue.use(VueLogger, {
   logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   showLogLevel: true,
 });
+
+Vue.component('more-less-toggle', MoreLessToggle);
+Vue.component('snpedia-frame', SnpediaFrame);
 
 /* eslint-disable no-new */
 new Vue({
