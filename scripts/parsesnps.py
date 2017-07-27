@@ -2,6 +2,7 @@
 
 import mwparserfromhell
 import utils
+import sys
 import re
 
 
@@ -14,15 +15,10 @@ def parse_snps():
         name = ptitle[0].lower() + ptitle[1:]
 
         paramMap = {
-            'stabilizedOrientation': 'orientation',
-            'chromosome': 'chromosome',
-            'position': 'position',
-            'referenceAllele': 'referenceAllele',
-            'missenseAllele': 'missenseAllele',
-            'assembly': 'assembly',
-            'genomeBuild': 'genomeBuild',
-            'dbSNPBuild': 'dbSNPBuild',
-            'summary': 'summary',
+            'stabilizedOrientation': 'r',
+            'chromosome': 'c',
+            'position': 'p',
+            'summary': 's',
             'gene_s': 'genes',
             'gene': 'gene',
         }
@@ -46,7 +42,7 @@ def parse_snps():
             if utils.normalize_name(template.name.strip_code()) not in ['rsnum', '23andMe SNP']:
                 continue
 
-            snpinfo['genotypes'] = []
+            snpinfo['t'] = []
             for n in range(1, 9):
                 param = 'geno' + str(n)
                 if template.has(param):
@@ -67,30 +63,22 @@ def parse_snps():
 
                     # genotypePage = '{}({};{})'.format(name, allele1, allele2)
 
-                    snpinfo['genotypes'].append(allele1 + allele2)
+                    snpinfo['t'].append(allele1 + allele2)
 
             parsed.remove(template, recursive=False)
             break
 
-        # snpinfo['details'] = str(parsed)
+        # snpinfo['d'] = str(parsed)
 
         yield(name, snpinfo)
 
 
 if __name__ == '__main__':
     snps = utils.run_parser(parse_snps)
-    minus = [name for name, details in snps.items() if details.get('orientation', None) == 'minus']
+    minus = [name for name, details in snps.items() if details.get('r', None) == 'minus']
 
     # "Compress" the list
-    rsids = []
-    for item in minus:
-        if item.startswith('rs'):
-            rsids.append(int(item[2:]))
-        else:
-            print('Found a non-rsID SNP having minus orientation. Snappy has a bug.')
-            sys.exit(1)
-
-    rsids = sorted(rsids)
+    rsids = sorted([int(item[2:]) if item.startswith('rs') else sys.exit(1) for item in minus])
 
     gaps = []
     conseq = 0

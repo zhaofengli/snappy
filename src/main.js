@@ -21,11 +21,13 @@ import router from '@/router';
 import store from '@/store';
 
 // == For your console pleasure ==
+import Snps from '@/snappy/Snps';
 import Genosets from '@/snappy/Genosets';
 import Genotypes from '@/snappy/Genotypes';
 import Analyzer from '@/snappy/Analyzer';
 import Utils from '@/snappy/Utils';
 
+window.Snps = Snps;
 window.Genosets = Genosets;
 window.Genotypes = Genotypes;
 window.Analyzer = Analyzer;
