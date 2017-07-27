@@ -26,6 +26,7 @@ export default class Genotypes {
       if (match) {
         // Exact match
         result = GenotypeData[snp][match];
+        result.o = match;
       } else if (genotype.indexOf('I') !== -1) {
         // Insertion
         const candidates = [];
