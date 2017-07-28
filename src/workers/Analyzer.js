@@ -9,6 +9,16 @@ async function process(fsnps) {
   const snps = await Genotypes.getSupportedSnps();
   const promises = [];
 
+  const reflect = p => p
+    .then(data => ({
+      status: 'resolved',
+      data,
+    }))
+    .catch(error => ({
+      status: 'rejected',
+      error,
+    }));
+
   const commonSnps = intersection(
     Object.keys(file.snps),
     snps,
@@ -16,7 +26,7 @@ async function process(fsnps) {
   for (const snp of commonSnps) {
     const genotype = file.normalizedSnps[snp].genotype;
     if (genotype !== '??') {
-      promises.push(Genotypes.get(snp, genotype));
+      promises.push(reflect(Genotypes.get(snp, genotype)));
     }
   }
 
@@ -31,18 +41,7 @@ async function process(fsnps) {
     }));
   }
 
-  const rPromises = promises.map(p => p
-    .then(data => ({
-      status: 'resolved',
-      data,
-    }))
-    .catch(error => ({
-      status: 'rejected',
-      error,
-    })),
-  );
-
-  const reflected = await Promise.all(rPromises);
+  const reflected = await Promise.all(promises);
   const results = [];
   for (const r of reflected) {
     if (r.status === 'resolved') {
