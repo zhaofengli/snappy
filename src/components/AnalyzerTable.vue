@@ -18,7 +18,7 @@
         </template>
         <template slot="items" scope="props">
           <tr>
-            <analyzer-card class="ma-2" :value="props.item"></analyzer-card>
+            <analyzer-card class="ma-2" :value="props.item" :options="options"></analyzer-card>
           </tr>
         </template>
       </v-data-table>
@@ -39,7 +39,7 @@ import Analyzer from '@/snappy/Analyzer';
 import AnalyzerCard from '@/components/AnalyzerCard';
 
 export default {
-  props: ['file'],
+  props: ['file', 'options'],
   data() {
     return {
       loaded: false,
@@ -100,7 +100,7 @@ export default {
     this.loaded = false;
     this.items = [];
 
-    Analyzer.analyze(this.file).then((data) => {
+    Analyzer.analyze(this.file, this.options).then((data) => {
       const result = [];
       data.map((d) => {
         const entry = Object.assign(

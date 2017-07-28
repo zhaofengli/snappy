@@ -3,8 +3,9 @@ import Genotypes from '@/snappy/Genotypes';
 import Genosets from '@/snappy/Genosets';
 import File from '@/snappy/File';
 
-async function process(fsnps) {
-  const file = new File('', fsnps);
+async function process(payload) {
+  const options = payload.options;
+  const file = new File('', payload.snps);
   const genosets = await Genosets.getSupportedGenosets();
   const snps = await Genotypes.getSupportedSnps();
   const promises = [];
@@ -30,15 +31,17 @@ async function process(fsnps) {
     }
   }
 
-  for (const genoset of genosets) {
-    promises.push(new Promise((r, rj) => {
-      Genosets.get(genoset).then((gs) => {
-        if (gs.match(file)) {
-          return r(gs);
-        }
-        return rj();
-      });
-    }));
+  if (options.enableGenosets) {
+    for (const genoset of genosets) {
+      promises.push(reflect(new Promise((r, rj) => {
+        Genosets.get(genoset).then((gs) => {
+          if (gs.match(file)) {
+            return r(gs);
+          }
+          return rj();
+        });
+      })));
+    }
   }
 
   const reflected = await Promise.all(promises);

@@ -29,7 +29,7 @@
       </div>
 
       <!-- SNP summary -->
-      <div v-if="isSnp" class="elevation-2 pa-2 grey lighten-2">
+      <div v-if="isSnp && options.enableExtraSnpInfo" class="elevation-2 pa-2 grey lighten-2">
         <div class="subheading">{{ value.name }}</div>
         {{ snpSummary }}
         <more-less-toggle v-model="snpFrame"></more-less-toggle>
@@ -46,7 +46,7 @@
 import Snps from '@/snappy/Snps';
 
 export default {
-  props: ['value'],
+  props: ['value', 'options'],
   computed: {
     snpedia() {
       return page => `https://www.snpedia.com/index.php/${page}`;
