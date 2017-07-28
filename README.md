@@ -1,6 +1,6 @@
 # Snappy
 
-![Screenshot](https://zhaofengli.github.io/snappy/static/screenshot.png)
+![Screenshot](static/screenshot.png)
 
 Snappy helps you browse through and interpret your genotype data, right on your
 browser. It accepts raw genotype files from 23andMe, AncestryDNA and
