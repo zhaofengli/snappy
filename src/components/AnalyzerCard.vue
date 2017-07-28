@@ -2,27 +2,40 @@
   <v-card :class="reputeColor + ' lighten-2'">
     <v-card-title>
       <div class="headline">
-        {{ value.name }}
+        {{ value.label }}
       </div>
     </v-card-title>
     <v-card-text class="pt-0">
-      <div>
-        <!-- Magnitude and Repute -->
-        <v-chip :class="magnitudeColor">
-          Magnitude:
-          {{ value.m }}
-        </v-chip>
-        <v-chip v-if="value.r" :class="reputeColor + ' lighten-1'">
-          {{ value.r }}
-        </v-chip>
+      <!-- Magnitude and Repute -->
+      <v-chip :class="magnitudeColor">
+        Magnitude:
+        {{ value.m }}
+      </v-chip>
+      <v-chip v-if="value.r" :class="reputeColor + ' lighten-1'">
+        {{ value.r }}
+      </v-chip>
+
+      <!-- Genotype/genoset summary -->
+      <div class="mb-2">
+        <p>
+          {{ value.s }}
+          <more-less-toggle v-model="genotypeFrame"></more-less-toggle>
+        </p>
+        <snpedia-frame
+          v-if="genotypeFrame"
+          class="elevation-2"
+          :page="value.label"
+        ></snpedia-frame>
       </div>
-      <p>
-        <!-- Summary -->
-        {{ value.s }}
-        <more-less-toggle v-model="snpediaFrame"></more-less-toggle>
-      </p>
+
+      <!-- SNP summary -->
+      <div v-if="isSnp" class="elevation-2 pa-2 grey lighten-2">
+        <div class="subheading">{{ value.name }}</div>
+        {{ snpSummary }}
+        <more-less-toggle v-model="snpFrame"></more-less-toggle>
+      </div>
       <snpedia-frame
-        v-if="snpediaFrame"
+        v-if="snpFrame"
         class="elevation-2"
         :page="value.name"
       ></snpedia-frame>
@@ -30,6 +43,8 @@
   </v-card>
 </template>
 <script>
+import Snps from '@/snappy/Snps';
+
 export default {
   props: ['value'],
   computed: {
@@ -57,20 +72,35 @@ export default {
       }
       return 'pink lighten-1';
     },
+    snpSummary() {
+      return this.snp ? this.snp.s : 'Loading';
+    },
+    isSnp() {
+      return !this.value.name.startsWith('gs');
+    },
+  },
+  asyncComputed: {
+    async snp() {
+      try {
+        const result = await Snps.get(this.value.name);
+        return Object.freeze(Object.assign({
+          s: 'No summary provided',
+        }, result));
+      } catch (e) {
+        return false;
+      }
+    },
   },
   data() {
     return {
-      snpediaFrame: false,
+      genotypeFrame: false,
+      snpFrame: false,
     };
-  },
-  methods: {
-    toggleSnpedia() {
-      this.snpediaFrame = !this.snpediaFrame;
-    },
   },
   watch: {
     value() {
-      this.snpediaFrame = false;
+      this.genotypeFrame = false;
+      this.snpFrame = false;
     },
   },
 };

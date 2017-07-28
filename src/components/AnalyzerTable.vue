@@ -47,8 +47,8 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Name',
-          value: 'name',
+          text: 'Label',
+          value: 'label',
           align: 'left',
           sortable: false,
         },
@@ -80,13 +80,15 @@ export default {
       this.loaded = true;
       this.items = [
         {
-          name: 'rs1234(A;C)',
+          label: 'rs1234(A;C)',
+          name: 'rs1234',
           m: 1.5,
           r: 'Good',
           s: 'Hmm. There is no file to analyze. As a result, this is displayed as an example.',
         },
         {
-          name: 'rs4988235(C;C)',
+          label: 'rs4988235(C;C)',
+          name: 'rs4988235',
           m: 2.5,
           r: 'Bad',
           s: 'Hmm. There is no file to analyze. As a result, this is displayed as an example.',
@@ -103,6 +105,7 @@ export default {
       data.map((d) => {
         const entry = Object.assign(
           {
+            label: '',
             name: '',
             m: 1,
             r: '',
@@ -110,11 +113,12 @@ export default {
           },
           d,
         );
+        entry.label = entry.name;
         if (has(entry, 'o')) {
-          entry.name += `(${entry.o})`;
+          entry.label += `(${entry.o})`;
         } else if (has(entry, 'g')) {
           const formatted = Utils.formatGenotype(entry.g);
-          entry.name += `(${formatted})`;
+          entry.label += `(${formatted})`;
         }
         return result.push(entry);
       });
