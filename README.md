@@ -1,7 +1,9 @@
 # Snappy
 
-![Screenshot](static/screenshot.png)
+[![Travis](https://img.shields.io/travis/zhaofengli/snappy.svg)]()
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fzhaofengli%2Fsnappy.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fzhaofengli%2Fsnappy?ref=badge_shield)
+
+![Screenshot](static/screenshot.png)
 
 Snappy helps you browse through and interpret your genotype data, right on your
 browser. It accepts raw genotype files from 23andMe, AncestryDNA and
