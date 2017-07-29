@@ -2,6 +2,7 @@ import Gql from 'gql';
 import clone from 'lodash/clone';
 import has from 'lodash/has';
 import GsCriteriaParser from '@/snappy/gs-criteria.pegjs';
+import IidAliases from '#/iidaliases.json';
 import MinusSnpGaps from '#/minussnpgaps.json';
 
 export default class Utils {
@@ -149,7 +150,21 @@ export default class Utils {
     return `${genotype[0]};${genotype[1]}`;
   }
 
+  static resolveIidAlias(iid) {
+    if (has(IidAliases, iid)) {
+      return IidAliases[iid];
+    }
+
+    return iid;
+  }
+
   static isSnpOrientationMinus(snp) {
+    if (snp.startsWith('i')) {
+      // 23andMe SNP; might have a corresponding rsID
+      // eslint-disable-next-line no-param-reassign
+      snp = this.resolveIidAlias(snp);
+    }
+
     if (!snp.startsWith('rs')) {
       return false;
     }

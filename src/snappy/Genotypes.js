@@ -8,11 +8,8 @@ export default class Genotypes {
 
     if (snp.startsWith('i')) {
       // 23andMe SNP; might have a corresponding rsID
-      const IidAliases = await import(/* webpackChunkName: "genotypes" */ '#/iidaliases.json');
-      if (has(IidAliases, snp)) {
-        // eslint-disable-next-line no-param-reassign
-        snp = IidAliases[snp];
-      }
+      // eslint-disable-next-line no-param-reassign
+      snp = this.resolveIidAlias(snp);
     }
 
     if (has(GenotypeData, snp)) {
