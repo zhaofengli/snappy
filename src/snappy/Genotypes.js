@@ -1,5 +1,6 @@
 import has from 'lodash/has';
 import Utils from '@/snappy/Utils';
+import IidAliases from '#/iidaliases.json';
 
 const genotypeRegex = new RegExp('^([AGCTI-]);?([AGCTI-])$');
 
@@ -80,7 +81,9 @@ export default class Genotypes {
 
   static async getSupportedSnps() {
     const GenotypeData = await import(/* webpackChunkName: "genotypes" */ '#/genotypes.json');
-    return Object.keys(GenotypeData);
+    const result = Object.keys(GenotypeData).concat(Object.keys(IidAliases));
+    Genotypes.getSupportedSnps = async () => result;
+    return result;
   }
 
   static getMatch(genotypes, allele1, allele2) {
