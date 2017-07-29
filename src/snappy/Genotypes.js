@@ -36,7 +36,15 @@ export default class Genotypes {
       if (match) {
         // Exact match
         result = GenotypeData[snp][match];
-        result.o = match;
+
+        if (typeof result === 'string') {
+          // Redirect
+          const target = result;
+          result = GenotypeData[snp][target];
+          result.o = target;
+        } else {
+          result.o = match;
+        }
       } else if (genotype.indexOf('I') !== -1) {
         // Insertion
         const candidates = [];
@@ -57,12 +65,6 @@ export default class Genotypes {
       }
 
       // Success
-      if (typeof result === 'string') {
-        // Redirect
-        const target = result;
-        result = GenotypeData[snp][target];
-        result.o = target;
-      }
       result.name = snp;
       result.g = genotype;
       return result;
