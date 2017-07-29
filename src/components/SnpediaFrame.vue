@@ -4,7 +4,7 @@
       <v-btn icon @click.native="reload" v-if="initialLoad && !onPage"><v-icon>home</v-icon></v-btn>
       <v-breadcrumbs divider="-">
         <v-breadcrumbs-item target="_blank" :href="fullUrl">SNPedia</v-breadcrumbs-item>
-        <v-breadcrumbs-item v-if="onPage">{{ page }}</v-breadcrumbs-item>
+        <v-breadcrumbs-item v-if="onPage || !initialLoad">{{ page }}</v-breadcrumbs-item>
       </v-breadcrumbs>
       <v-spacer></v-spacer>
       <v-progress-circular v-if="!initialLoad" indeterminate class="primary--text"></v-progress-circular>
