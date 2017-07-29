@@ -5,19 +5,6 @@ import Utils from '@/snappy/Utils';
 export default class File {
   constructor(id, snps) {
     this.id = id;
-
-    // HACK: Dirty hack for dna2json/gql; this should probably be upstreamed
-    //
-    // 23andMe reports genotypes on some chromosomes with one letter,
-    // causing inconsistencies when querying.
-    //
-    // This makes 23andMe data compatible with SNPedia's notations
-    for (const snp of Object.keys(snps)) {
-      const g = snps[snp].genotype;
-      if (g.length === 1) {
-        snps[snp].genotype = `${g}${g}`;
-      }
-    }
     this.snps = Object.freeze(snps);
 
     // Normalized SNPs
