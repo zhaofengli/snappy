@@ -1,4 +1,5 @@
 import has from 'lodash/has';
+import Utils from '@/snappy/Utils';
 
 const genotypeRegex = new RegExp('^([AGCTI-]);?([AGCTI-])$');
 
@@ -8,8 +9,15 @@ export default class Genotypes {
 
     if (snp.startsWith('i')) {
       // 23andMe SNP; might have a corresponding rsID
-      // eslint-disable-next-line no-param-reassign
-      snp = this.resolveIidAlias(snp);
+      const resolved = Utils.resolveIidAlias(snp);
+      if (resolved) {
+        /* eslint-disable no-param-reassign */
+        snp = resolved;
+        if (Utils.isSnpOrientationMinus(snp)) {
+          genotype = Utils.flipAlleles(genotype);
+        }
+        /* eslint-enable no-param-reassign */
+      }
     }
 
     if (has(GenotypeData, snp)) {

@@ -155,16 +155,10 @@ export default class Utils {
       return IidAliases[iid];
     }
 
-    return iid;
+    return false;
   }
 
   static isSnpOrientationMinus(snp) {
-    if (snp.startsWith('i')) {
-      // 23andMe SNP; might have a corresponding rsID
-      // eslint-disable-next-line no-param-reassign
-      snp = this.resolveIidAlias(snp);
-    }
-
     if (!snp.startsWith('rs')) {
       return false;
     }
