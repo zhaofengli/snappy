@@ -30,9 +30,8 @@ def parse_snps():
         if 'position' in snpinfo:
             snpinfo['position'] = utils.filter_value(int, snpinfo['position'])
 
-        if 'gene_s' in snpinfo:
-            snpinfo['genes'] = [g.strip() for g in snpinfo['gene_s'].split(',')]
-            snpinfo.pop('gene_s', None)
+        if 'genes' in snpinfo:
+            snpinfo['genes'] = [g.strip() for g in snpinfo['genes'].split(',')]
             snpinfo.pop('gene', None)
         elif 'gene' in snpinfo:
             snpinfo['genes'] = [snpinfo['gene'].strip()]
