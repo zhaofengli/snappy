@@ -21,11 +21,15 @@ def parse_snps():
             'summary': 's',
             'gene_s': 'genes',
             'gene': 'gene',
+            'rsid': 'rsid',
         }
 
         parsed = mwparserfromhell.parse(ptext)
         snpinfo = {}
         snpinfo.update(utils.extract_parameters(parsed, ['rsnum', '23andMe SNP'], paramMap))
+
+        if name.startswith('rs'):
+            snpinfo.pop('rsid', None)
 
         if 'position' in snpinfo:
             snpinfo['position'] = utils.filter_value(int, snpinfo['position'])
@@ -100,8 +104,15 @@ if __name__ == '__main__':
     if conseq:
         gaps.append(-1 * conseq)
 
+    # Get 23andMe SNP aliases
+    aliases = dict([
+        (iid, 'rs' + snps[iid]['rsid']) for iid in snps
+        if iid.startswith('i') and 'rsid' in snps[iid]
+    ])
+
     files = {
         'snps.json': snps,
         'minussnpgaps.json': gaps,
+        'iidaliases.json': aliases,
     }
     utils.write_files(files)

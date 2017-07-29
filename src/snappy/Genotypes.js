@@ -5,6 +5,16 @@ const genotypeRegex = new RegExp('^([AGCTI-]);?([AGCTI-])$');
 export default class Genotypes {
   static async get(snp, genotype) {
     const GenotypeData = await import(/* webpackChunkName: "genotypes" */ '#/genotypes.json');
+
+    if (snp.startsWith('i')) {
+      // 23andMe SNP; might have a corresponding rsID
+      const IidAliases = await import(/* webpackChunkName: "genotypes" */ '#/iidaliases.json');
+      if (has(IidAliases, snp)) {
+        // eslint-disable-next-line no-param-reassign
+        snp = IidAliases[snp];
+      }
+    }
+
     if (has(GenotypeData, snp)) {
       if (typeof genotype === 'undefined') {
         // get(snp)
