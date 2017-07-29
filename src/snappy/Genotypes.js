@@ -7,7 +7,7 @@ export default class Genotypes {
   static async get(snp, genotype) {
     const GenotypeData = await import(/* webpackChunkName: "genotypes" */ '#/genotypes.json');
 
-    if (snp.startsWith('i')) {
+    if (!has(GenotypeData, snp) && snp.startsWith('i')) {
       // 23andMe SNP; might have a corresponding rsID
       const resolved = Utils.resolveIidAlias(snp);
       if (resolved) {
