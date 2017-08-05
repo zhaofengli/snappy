@@ -28,6 +28,7 @@ def run_parser(f):
 
 
 def normalize_name(name):
+    name = name.strip()
     return name[0].lower() + name[1:]
 
 
@@ -59,7 +60,7 @@ def extract_parameters(parsed, tname, mapping, delete=False):
                 continue
 
             mapped = mapping[rpname]
-            result[mapped] = param.value.strip_code()
+            result[mapped] = param.value.strip_code().strip()
 
         if delete:
             parsed.remove(template, recursive=False)
