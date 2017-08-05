@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import untangle
 import glob
 import json
@@ -70,6 +70,16 @@ def extract_parameters(parsed, tname, mapping, delete=False):
     return {}
 
 
+def deep_sort_dict(d):
+    s = OrderedDict(sorted(d.items()))
+
+    for key in s:
+        if type(s[key]) in [defaultdict, dict]:
+            s[key] = deep_sort_dict(s[key])
+
+    return s
+
+
 def iter_dump(category):
     for fname in glob.iglob('{}*.xml'.format(category)):
         print('Processing {}'.format(fname))
@@ -81,6 +91,9 @@ def iter_dump(category):
 
 def write_files(files):
     for fname, data in files.items():
+        if type(data) in [defaultdict, dict]:
+            data = deep_sort_dict(data)
+
         with open(fname, 'w') as f:
             json.dump(data, f, separators=(',', ':'))
             print('{} written ({})'.format(fname, sizeof_fmt(f.tell())))
