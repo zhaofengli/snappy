@@ -113,13 +113,20 @@ export default class Utils {
   }
 
   static guessProvider(file) {
-    switch (file.length) {
-      // 23andMe
-      // TODO: Handle partial downloads
-      case 598897: return '23andMe v4';
-      case 991624: return '23andMe v3';
-      case 579751: return '23andMe v2';
+    if (has(file.snps, 'i3000001')) {
+      // Hi there, 23andMe data
+      // TODO: 23andMe v5
+      if (has(file.snps, 'i6061582')) {
+        return '23andMe v4';
+      } else if (has(file.snps, 'i5901253')) {
+        return '23andMe v3';
+      } else if (has(file.snps, 'i5900736')) {
+        return '23andMe v2';
+      }
+      return '23andMe v1';
+    }
 
+    switch (file.length) {
       // AncestryDNA
       case 668942: return 'AncestryDNA v2';
       case 701478: return 'AncestryDNA v1';
