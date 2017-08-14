@@ -1,5 +1,6 @@
 import clone from 'lodash/clone';
 import has from 'lodash/has';
+import isFunction from 'lodash/isFunction';
 import Utils from '@/snappy/Utils';
 
 export default class File {
@@ -60,6 +61,35 @@ export default class File {
       writable: false,
       configurable: true,
     });
+    return result;
+  }
+
+  serialize(format) {
+    const formatMap = {
+      csv: {
+        header: 'rsid,chromosome,genotype\r\n',
+        linefmt: (snp, info) => `${snp},${info.chromosome},${info.genotype}\r\n`,
+      },
+      snplist: {
+        header: '',
+        linefmt: snp => `${snp}\r\n`,
+      },
+      json: file => JSON.stringify(file.snps),
+    };
+
+    if (!has(formatMap, format)) {
+      throw Error(`Invalid format: ${format}`);
+    }
+
+    if (isFunction(formatMap[format])) {
+      return formatMap[format](this);
+    }
+
+    let result = formatMap[format].header;
+    for (const snp of Object.keys(this.snps)) {
+      result += formatMap[format].linefmt(snp, this.snps[snp]);
+    }
+
     return result;
   }
 }

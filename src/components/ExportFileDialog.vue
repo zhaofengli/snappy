@@ -7,11 +7,21 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text>
-        The file will be saved in <a href="https://github.com/genomejs/dna2json">SNP-JSON format</a>.
+        <v-select
+          required
+          hide-details
+          return-object
+          label="Output format"
+          :items="formats"
+          v-model="format"
+          item-text="name"
+          item-value="id"
+        ></v-select>
       </v-card-text>
       <v-card-actions>
         <v-btn
           flat="flat"
+          :disabled="!format"
           @click.native="exportFile"
         >Export</v-btn>
         <v-btn
@@ -30,6 +40,27 @@ export default {
     return {
       dialog: false,
       file: null,
+      format: null,
+      formats: [
+        {
+          id: 'csv',
+          extension: 'csv',
+          mime: 'text/csv',
+          name: 'CSV',
+        },
+        {
+          id: 'json',
+          extension: 'json',
+          mime: 'application/json',
+          name: 'JSON',
+        },
+        {
+          id: 'snplist',
+          extension: 'txt',
+          mime: 'text/plain',
+          name: 'List of SNPs (TXT)',
+        },
+      ],
     };
   },
   methods: {
@@ -38,8 +69,10 @@ export default {
       this.file = file;
     },
     exportFile() {
-      const json = JSON.stringify(this.file.snps);
-      download(json, 'snappy.json', 'application/json');
+      const filename = `${this.file.name}.${this.format.extension}`;
+      const result = this.file.serialize(this.format.id);
+
+      download(result, filename, this.format.mime);
     },
     done() {
       this.dialog = false;
