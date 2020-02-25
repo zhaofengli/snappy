@@ -23,7 +23,7 @@ Base
   = [AGCTDI-]
 
 Genotype
-  = allele1:Base ';' allele2:Base { return { type: 'Genotype', allele1, allele2 } }
+  = allele1:Base ';' allele2:Base Base* { return { type: 'Genotype', allele1, allele2 } }
 
 Number
   = n:[0-9]+ { return parseInt(n.join('')) }

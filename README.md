@@ -35,7 +35,7 @@ the repo but may be out-of-date. To generate an updated copy, you need Python
 
 ```bash
 cd scripts
-pip3 install -r < requirements.txt
+pip3 install -r requirements.txt
 make
 ```
 
