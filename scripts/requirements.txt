@@ -16,12 +16,12 @@ mwparserfromhell == 0.4.4
 
 # dumpcat.py: 3
 # getgs.py: 3
-pywikibot == 3.0.dev0
+pywikibot == 3.0.20200111
 
 # dumpcat.py: 4
 # getgs.py: 2
 # getorientations.py: 1
-requests == 2.12.4.egg
+requests == 2.23.0
 
 # snps.py: 2
 # utils.py: 2
