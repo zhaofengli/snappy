@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js --max-old-space-size 4096",
+    "build": "node build/build.js --max_old_space_size=8192",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
