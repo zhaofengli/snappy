@@ -63,6 +63,7 @@ RUN yarn run build
 FROM nginx:1.23.3-alpine AS test
 
 #WORKDIR /usr/share/nginx/html
+RUN ls /usr/share/nginx/html
 COPY --from=builder dist /usr/share/nginx/html
 
 EXPOSE 80
