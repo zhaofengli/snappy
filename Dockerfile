@@ -1,4 +1,4 @@
-FROM node:6.2.2-wheezy AS builder
+FROM node:6.2.2-wheezy
 
 RUN echo hello world
 RUN pwd
