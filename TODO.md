@@ -35,10 +35,17 @@ The reason why it impacted node-sass was because node-sass uses node-gyp, which 
 ## Add `npm audit` if not Snyk
 
 ## Add GitHub Actions
-
+- In progress
 
 ## Dockerfile
 - Need to figure out best way to build for dev/prod.
 - yarn must take an option to ignore devDependencies based on target env
 - Entrypoint will also change
 - Multiple Dockerfiles? Or for entrypoint, a wrapper.sh script which checks ENVIRONMENT env var and runs yarn run dev/yarn run build
+
+## Docker build issues
+- Investigate why --max-old-space-size is required, GC issue or just huge project?
+
+## Dependencies
+- Many dependencies are out of date, some like node-sass have replacements (just `sass`) however this introduces new issues
+- Other dependencies need to be reviewed whether they are necessary, as well as if it is possible to replace some which contain loads of subdependencies

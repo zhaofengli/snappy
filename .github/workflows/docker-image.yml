@@ -21,7 +21,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: false
-          tags: snappy:$(date +%s)
+          tags: snappy:latest
       -
         name: Archive production artifacts
         uses: actions/upload-artifact@v3
