@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1
-
-# todo: change back to slim
 FROM node:6.2.2-wheezy AS builder
+
 
 # install Python2
 ## credit: https://github.com/Docker-Hub-frolvlad/docker-alpine-python2/blob/master/Dockerfile
