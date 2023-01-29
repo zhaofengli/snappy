@@ -41,14 +41,14 @@ RUN npm install -g yarn
 
 # the below RUN yarn install was commented out as trying it above
 #yarn –-network-timeout 100000 (in ms, so this is 100s)
-RUN yarn install --network-timeout 100000 --verbose
+RUN yarn install --network-timeout 100000
 
 # this builds and launches a listening dev server (167.475 seconds)
 #CMD yarn run dev
 # this just builds for production
 #CMD yarn run build
 COPY . /app
-RUN yarn run build --verbose
+RUN yarn run build
 # todo: add script for running yarn run dev/build (dev for dev, build for production)
 ## -> https://stackoverflow.com/questions/60197212/calling-different-commands-in-dockerfiles-depending-on-environment
 
