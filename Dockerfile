@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM node:6.2.2-wheezy
 
 RUN echo hello world
 RUN pwd
