@@ -1,5 +1,7 @@
-FROM node:6.2.2-wheezy AS builder
+# syntax=docker/dockerfile:1
 
+# todo: change back to slim
+FROM node:6.2.2-wheezy AS builder
 
 # install Python2
 ## credit: https://github.com/Docker-Hub-frolvlad/docker-alpine-python2/blob/master/Dockerfile
@@ -62,7 +64,7 @@ FROM nginx:1.23.3-alpine AS test
 
 #WORKDIR /usr/share/nginx/html
 RUN ls /usr/share/nginx/html
-COPY --from=builder dist /usr/share/nginx/html
+COPY --from=builder app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
