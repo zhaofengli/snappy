@@ -18,8 +18,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
           push: false
           tags: snappy:latest
       -
